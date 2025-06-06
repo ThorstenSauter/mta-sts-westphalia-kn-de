@@ -1,4 +1,4 @@
-module "mta_sts" {
+module "mta_sts_twv_westphalia_de" {
   source                    = "github.com/ThorstenSauter/mta-sts-cloudflare-azure-static-web-app?ref=1.0.4"
   domain                    = "twv-westphalia.de"
   azure_location            = var.location
@@ -14,7 +14,7 @@ module "mta_sts" {
   ]
 }
 
-module "mta_sts" {
+module "mta_sts_westphalia_kn_de" {
   source                    = "github.com/ThorstenSauter/mta-sts-cloudflare-azure-static-web-app?ref=1.0.4"
   domain                    = "westphalia-kn.de"
   azure_location            = var.location
