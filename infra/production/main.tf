@@ -1,19 +1,3 @@
-module "mta_sts_twv_westphalia_de" {
-  source                    = "github.com/ThorstenSauter/mta-sts-cloudflare-azure-static-web-app?ref=1.0.4"
-  domain                    = "twv-westphalia.de"
-  azure_location            = var.location
-  azure_resource_group_name = "rg-mta-sts-twv-westphalia-de-prod-001"
-  azure_static_web_app_name = "stapp-mta-sts-twv-westphalia-de-prod-01"
-  azure_tags                = var.tags
-  mta_sts_mode              = "enforce"
-  mx_hosts = [
-    "twvwestphalia-de0i.v-v1.mx.microsoft"
-  ]
-  rua = [
-    "mailto:tls-report@twv-westphalia.de"
-  ]
-}
-
 module "mta_sts_westphalia_kn_de" {
   source                    = "github.com/ThorstenSauter/mta-sts-cloudflare-azure-static-web-app?ref=1.0.4"
   domain                    = "westphalia-kn.de"
