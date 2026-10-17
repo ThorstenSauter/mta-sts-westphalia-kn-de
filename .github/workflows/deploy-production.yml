@@ -11,6 +11,13 @@ permissions:
   contents: read
   id-token: write
 
+# Never cancelled: stopping a terraform apply part way can leave the state locked. PR plans stay
+# out of this group on purpose and wait on the state lock (lock-timeout) instead: a third queued
+# job in a shared group would cancel a pending deployment.
+concurrency:
+  group: terraform-state-production
+  cancel-in-progress: false
+
 jobs:
   apply-production:
     name: Apply production environment
