@@ -1,0 +1,70 @@
+name: Weekly MTA-STS check
+
+on:
+  schedule:
+    - cron: '0 6 * * 1' # Mondays 06:00 UTC
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/workflows/mta-sts-check.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    name: Validate MTA-STS configuration
+    runs-on: ubuntu-latest
+    env:
+      MTA_STS_DOMAIN: westphalia-kn.de
+    steps:
+      - name: Validate MTA-STS configuration
+        id: check
+        uses: ThorstenSauter/mta-sts-check-action@f3cb719e3193f2c68ba5c902c538996e86d6d1f4 # v1.0.0
+        with:
+          domain: ${{ env.MTA_STS_DOMAIN }}
+      - name: Open, update or close the tracking issue
+        if: always() && github.event_name != 'pull_request'
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          OUTCOME: ${{ steps.check.outcome }}
+          REPORT: ${{ steps.check.outputs.report }}
+        with:
+          script: |
+            const label = 'mta-sts-check';
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const { data: issues } = await github.rest.issues.listForRepo({
+              ...context.repo,
+              state: 'open',
+              labels: label,
+            });
+            const issue = issues[0];
+
+            if (process.env.OUTCOME !== 'success') {
+              const body = `${process.env.REPORT || 'The check did not produce a report.'}\n\n[Workflow run](${runUrl})`;
+              if (issue) {
+                await github.rest.issues.createComment({ ...context.repo, issue_number: issue.number, body });
+              } else {
+                await github.rest.issues.create({
+                  ...context.repo,
+                  title: `MTA-STS check failed for ${process.env.MTA_STS_DOMAIN}`,
+                  labels: [label],
+                  body,
+                });
+              }
+            } else if (issue) {
+              await github.rest.issues.createComment({
+                ...context.repo,
+                issue_number: issue.number,
+                body: `The MTA-STS check passes again. [Workflow run](${runUrl})`,
+              });
+              await github.rest.issues.update({
+                ...context.repo,
+                issue_number: issue.number,
+                state: 'closed',
+                state_reason: 'completed',
+              });
+            }
