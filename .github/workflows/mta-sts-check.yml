@@ -10,14 +10,15 @@ on:
       - .github/workflows/mta-sts-check.yml
   workflow_dispatch:
 
-permissions:
-  contents: read
-  issues: write
+permissions: {}
 
 jobs:
   check:
     name: Validate MTA-STS configuration
     runs-on: ubuntu-latest
+    permissions:
+      issues: write # Opens, comments on and closes the tracking issue
+    timeout-minutes: 10
     env:
       MTA_STS_DOMAIN: westphalia-kn.de
     steps:
