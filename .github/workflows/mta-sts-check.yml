@@ -24,7 +24,7 @@ jobs:
     steps:
       - name: Validate MTA-STS configuration
         id: check
-        uses: ThorstenSauter/mta-sts-check-action@f3cb719e3193f2c68ba5c902c538996e86d6d1f4 # v1.0.0
+        uses: ThorstenSauter/mta-sts-check-action@aa34c7af7a0619beddeae7a6f583ac9c638c8422 # v1.0.1
         with:
           domain: ${{ env.MTA_STS_DOMAIN }}
       - name: Open, update or close the tracking issue
