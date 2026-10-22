@@ -21,7 +21,9 @@ concurrency:
 jobs:
   apply-production:
     name: Apply production environment
-    runs-on: ubuntu-latest
+    # x64: the module deploys with the Static Web Apps CLI, which has no arm64 build
+    # (Azure/static-web-apps-cli#987).
+    runs-on: ubuntu-26.04
     environment: production
     env:
       ARM_CLIENT_ID: ${{ vars.AZURE_CLIENT_ID }}
