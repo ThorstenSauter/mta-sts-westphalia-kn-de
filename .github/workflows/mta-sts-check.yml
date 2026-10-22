@@ -15,7 +15,7 @@ permissions: {}
 jobs:
   check:
     name: Validate MTA-STS configuration
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04-arm
     permissions:
       issues: write # Opens, comments on and closes the tracking issue
     timeout-minutes: 10
