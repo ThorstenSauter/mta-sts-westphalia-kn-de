@@ -24,7 +24,7 @@ A real `plan`/`apply` needs the azurerm backend (configured through CI variables
 - `terraform-plan.yml` (PRs to `main`): validates, then plans in the `plan-production` environment and posts the result to the PR. That environment holds read-only credentials (a Reader managed identity and a Zone:Read/DNS:Read Cloudflare token); `production`, with write access, is restricted to `main` and used only by the deploy. It uses `ThorstenSauter/terraform-actions`.
 - `deploy-production.yml` (push to `main`): runs `terraform apply`. **Merging to `main` changes the live policy and DNS.**
   Deploys run one at a time in the `terraform-state-production` concurrency group and are never cancelled. Keep PR plan jobs out of that group: they wait on the state lock (`lock-timeout`) instead, because a third queued job in a group cancels the pending one.
-- `mta-sts-check.yml` runs weekly (Mondays 06:00 UTC) and validates the live MTA-STS setup with `ThorstenSauter/mta-sts-check-action`. It opens, updates or closes a tracking issue labeled `mta-sts-check`.
+- `mta-sts-check.yml` runs daily (06:00 UTC) and validates the live MTA-STS setup with `ThorstenSauter/mta-sts-check-action`. It opens, updates or closes a tracking issue labeled `mta-sts-check`.
 - Azure auth uses OIDC. Backend settings and the working directory come from repository/environment variables (`TF_*`, `INFRA_DIRECTORY`). Nothing is hard-coded.
 - The Terraform version is read from `.terraform-version`.
 
