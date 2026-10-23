@@ -1,5 +1,5 @@
 module "mta_sts_westphalia_kn_de" {
-  source                    = "github.com/ThorstenSauter/mta-sts-cloudflare-azure-static-web-app?ref=3.0.0"
+  source                    = "github.com/ThorstenSauter/mta-sts-cloudflare-azure-static-web-app?ref=3.1.1"
   domain                    = "westphalia-kn.de"
   azure_location            = var.location
   azure_resource_group_name = "rg-mta-sts-westphalia-kn-de-prod-001"
