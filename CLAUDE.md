@@ -34,7 +34,7 @@ Edit the `module` block in `infra/production/main.tf`: `mx_hosts` (must match th
 ## Conventions
 
 - Dependency updates (actions, the module `?ref=`, tflint plugin) come from Renovate using the shared `local>ThorstenSauter/renovate-config` preset. Major module bumps can change inputs, so check the module's release notes.
-- GitHub Actions are pinned to commit SHAs with a `# vX.Y.Z` comment.
+- GitHub Actions are referenced by full version tag (`@vX.Y.Z`); `.github/workflows/actions.lock` locks the commits. After changing a `uses:` line by hand, run `gh actions-lock` and commit the lockfile.
 - `.terraform.lock.hcl` is committed (this is a root module).
 - Commit messages follow Conventional Commits (`feat:`, `ci:`, `chore(deps):`), and changes land through PRs.
 - `.editorconfig`: LF line endings, 2-space indent, UTF-8.
