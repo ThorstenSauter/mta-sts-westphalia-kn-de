@@ -24,12 +24,12 @@ jobs:
     steps:
       - name: Validate MTA-STS configuration
         id: check
-        uses: ThorstenSauter/mta-sts-check-action@aa34c7af7a0619beddeae7a6f583ac9c638c8422 # v1.0.1
+        uses: ThorstenSauter/mta-sts-check-action@v1.0.1
         with:
           domain: ${{ env.MTA_STS_DOMAIN }}
       - name: Open, update or close the tracking issue
         if: always() && github.event_name != 'pull_request'
-        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        uses: actions/github-script@v9.0.0
         env:
           OUTCOME: ${{ steps.check.outcome }}
           REPORT: ${{ steps.check.outputs.report }}
